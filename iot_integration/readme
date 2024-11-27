@@ -11,9 +11,14 @@
     Verify the installation: Once the installation is complete, verify that pip is installed by running:
         pip --version
         This should return the version of pip installed.
+    
+    If pip not found.
+       export PATH="$HOME/.local/bin:$PATH"
+    
+    Check version again.
 
 2. Install Required Libraries using PIP
-    pip install azure-iot-device bleak sqlite3
+    pip install azure-iot-device bleak
 
 3. Set up Configuration
    Make sure the "iot_config.json" file exists at the specified path (<copy relative path and paste in line no 15>) and contains the correct configuration values for hub_hostname, cert_file, and key_file.
