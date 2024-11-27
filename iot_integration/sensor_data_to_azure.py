@@ -8,11 +8,14 @@ from azure.iot.device import X509
 from bleak import BleakScanner, BleakClient
 import os
 import time
+import re
 
+IOT_CONFIG_PATH = "iot_integration/iot_config.json"
 #Load Configuration
 def load_config():
     try:
-        with open('Datahoist/V1_Scripts/Azure_iot_integration/Final_scripts/iot_config.json', 'r') as config_file:
+        config_path = os.getenv('IOT_CONFIG_PATH', 'iot_integration/iot_config.json')
+        with open(config_path, 'r') as config_file:
             return json.load(config_file)
     except FileNotFoundError:
         print("Configuration file not found at the specified path.")
@@ -396,7 +399,14 @@ async def run():
                 logging.info(f"Connected to BLE Device: {target_device.address}")
                 print(f"Connected to BLE Device: {target_device.address}")
 
-                import re
+                services = await client.get_services()
+
+                for service in services:
+                    print(f"Service: {service.uuid}")
+                    for characteristic in service.characteristics:
+                        print(f"  Characteristic: {characteristic.uuid}")
+                        print(f"    Properties: {characteristic.properties}")
+                        print(f"    Description: {characteristic.description}")
 
                 async def notification_handler(characteristic, data):
                     nonlocal notification_buffer
